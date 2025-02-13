@@ -2,6 +2,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity,Image, ActivityIndicator} from 'react-native';
 const logo  = require('../assets/Aicar-lg.png')
+import { Link } from 'expo-router';
 
 
 export function Main() {
@@ -15,6 +16,9 @@ export function Main() {
         <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>SIGN IN</Text>
         </TouchableOpacity>
+        <Link href="/signin"> Sign in </Link>
+        <Link href="/new_u"> Sign up</Link>
+
         <TouchableOpacity style={styles.button}>
             <Text style={styles.buttonText}>SIGN UP</Text>
         </TouchableOpacity>
