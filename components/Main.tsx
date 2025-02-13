@@ -14,13 +14,10 @@ export function Main() {
         />
         <Text style={styles.title}>Welcome Back</Text>
         <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>SIGN IN</Text>
+            <Link href="/signin" style={styles.buttonText}>SIGN IN</Link>
         </TouchableOpacity>
-        <Link href="/signin"> Sign in </Link>
-        <Link href="/new_u"> Sign up</Link>
-
         <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>SIGN UP</Text>
+            <Link href="/new_u" style={styles.buttonText}>SIGN UP</Link>
         </TouchableOpacity>
         <TouchableOpacity style={styles.googleButton}>
             <Text style={styles.googleText}>Sign in with Google</Text>
