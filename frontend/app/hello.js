@@ -1,20 +1,47 @@
-import React from 'react';
-import { View, Text, StyleSheet,Image, ImageBackground } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { View, Text, StyleSheet,Image, ImageBackground, Platform } from 'react-native';
 const logo  = require('../assets/Aicar-lg.png')
 import { Link } from 'expo-router';
+const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/datos' : 'http://localhost:8082/api/datos';
 
 export default function WelcomePage() {
-  return (
-          <View style={styles.container}>
-            <Image
-              source={logo}
-              style={styles.image}
-            />
-            <Text style={styles.logo}>Aicar.</Text>
-            <Text style={styles.title}>Hello Freddy!</Text>
-              
-          </View>
-  );
+  const [userName, setUserName] = useState('');
+  const [data, setData] = useState([]);
+    const fetchData = async () => {
+      try {
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+    
+        if (!response.ok) {
+          throw new Error(`HTTP Error! Status: ${response.status}`);
+        }
+    
+        const json = await response.json();
+        if (json.length > 0) {
+          setUserName(json[0].first_name);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error.message);
+      }
+    };
+  
+    useEffect(() => {
+      fetchData();
+    }, []);
+    return (
+      <View style={styles.container}>
+        <Image source={logo} style={styles.image} />
+        <Text style={styles.logo}>Aicar.</Text>
+        {userName ? (
+          <Text style={styles.title}>Welcome, {userName}!</Text> // Muestra el nombre del usuario
+        ) : (
+          <Text style={styles.title}>Loading...</Text> // Muestra 'Loading' mientras se carga el nombre
+        )}
+      </View>
+    );
+  
 };
 
 const styles = StyleSheet.create({
@@ -22,13 +49,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(187, 164, 165, 0.5)', // Color de fondo semi-transparente
   },
-  backgroundImage: {
-    flex: 1,
-    width: '100%',
-    height: '100%',
-  },
+  
   image: {
     width: 200,    // Ajusta el tamaño de la imagen
     height: 250,   // Ajusta el tamaño de la imagen

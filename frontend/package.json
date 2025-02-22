@@ -1,5 +1,5 @@
 {
-  "name": "aicar_app2",
+  "name": "AIcar2_app",
   "version": "1.0.0",
   "main": "expo-router/entry",
   "scripts": {
@@ -11,12 +11,18 @@
   "dependencies": {
     "@expo/metro-runtime": "~4.0.1",
     "aicar_app2": "file:",
+    "AIcar2_app": "file:",
     "eslint-config-expo": "~8.0.1",
     "expo": "~52.0.30",
+    "expo-auth-session": "~6.0.3",
     "expo-constants": "~17.0.5",
     "expo-linking": "~7.0.5",
-    "expo-router": "~4.0.17",
+    "expo-random": "^14.0.1",
+    "expo-router": "^4.0.17",
     "expo-status-bar": "~2.0.1",
+    "expo-updates": "~0.26.17",
+    "expo-web-browser": "~14.0.2",
+    "mysql": "^2.18.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-native": "0.76.6",
