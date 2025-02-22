@@ -1,6 +1,6 @@
 import { Slot } from "expo-router";
 import {StyleSheet, View, ImageBackground} from "react-native";
-import { Carga } from "../components/Carga";
+import { Carga } from "../../components/Carga";
 
 export default function Layout(){
   const backimag = require('../assets/rm378-08f.jpg')
