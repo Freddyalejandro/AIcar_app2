@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet,Platform } from 'react-native';
-const API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8082/api/signin' : 'http://localhost:8082/api/signin';
+const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/signin' : 'http://localhost:8082/api/signin';
 
 const SignUp = () => {
   // Estados para almacenar los valores de los campos de entrada
