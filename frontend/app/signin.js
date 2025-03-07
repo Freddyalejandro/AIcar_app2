@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link } from 'expo-router';
+import { useRouter } from 'expo-router';
 //samuel.rb@gmail.com
 const logo  = require('../assets/Aicar-lg.png')
-const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/signin' : 'http://localhost:8082/api/signin';
+const API_URL = Platform.OS === 'android' ? 'http://10.100.62.71:8082/api/signin' : 'http://localhost:8082/api/signin';
 
 export default function LoginPage() {
+  const router = useRouter(); // Agregar useRouter()
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -29,7 +31,7 @@ export default function LoginPage() {
             if (data.first_name) {
                 await AsyncStorage.setItem('userName', data.first_name);
                 console.log('Nombre guardado en AsyncStorage:', data.first_name);
-                navigation.navigate('hello');
+                router.push('/hello'); // Corregido
             } else {
                 console.log("Error: 'first_name' no está presente en la respuesta.");
             }

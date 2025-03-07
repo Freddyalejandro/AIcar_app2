@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Picker, Button, ScrollView, StyleSheet } from "react-native";
+import { View, Text, TextInput, Button, ScrollView, StyleSheet } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
+import { Picker } from '@react-native-picker/picker';
 
 
 const logo  = require('../assets/Aicar-lg.png');

@@ -3,30 +3,35 @@ import { View, Text, StyleSheet, Image, Platform } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRouter } from 'expo-router';
 
+
 const logo = require('../assets/Aicar-lg.png');
 
-const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/datos' : 'http://localhost:8082/api/datos';
+const API_URL = Platform.OS === 'android' ? 'http://10.100.62.71:8082/api/datos' : 'http://localhost:8082/api/datos';
 
 export default function WelcomePage() {
   const [userName, setUserName] = useState('');
   const router = useRouter();
   const [isFirstTime, setIsFirstTime] = useState(null);
+  const [showMessage, setShowMessage] = useState(false);
 
   useEffect(() => {
     const checkUserStatus = async () => {
       try {
-        // Obtener el nombre del usuario
         const storedName = await AsyncStorage.getItem('userName');
         if (storedName) {
           setUserName(storedName);
         }
 
-        // Verificar si el usuario ya completó el formulario
         const formCompleted = await AsyncStorage.getItem('formCompleted');
 
         if (!formCompleted) {
-          // Si el formulario no está completado, redirigir a la página del formulario
-          navigation.navigate('new_form');; // Asegúrate de que la ruta existe
+          setTimeout(() => {
+            setShowMessage(true); // Muestra el mensaje antes de la redirección
+          }, 10000); // Muestra el mensaje a los 20 segundos
+
+          setTimeout(() => {
+            router.push('/new_form'); // Redirige después de 30 segundos
+          }, 20000);
         }
       } catch (error) {
         console.error('Error checking user status:', error);
@@ -41,10 +46,11 @@ export default function WelcomePage() {
       <Image source={logo} style={styles.image} />
       <Text style={styles.logo}>Aicar.</Text>
       {userName ? (
-        <Text style={styles.title}>Welcome, {userName}!</Text> // Muestra el nombre del usuario
+        <Text style={styles.title}>Welcome, {userName}!</Text>
       ) : (
-        <Text style={styles.title}>Loading...</Text> // Muestra 'Loading' mientras se carga el nombre
+        <Text style={styles.title}>Loading...</Text>
       )}
+      {showMessage && <Text style={styles.warning}>We need to know more about you...</Text>}
     </View>
   );
 }
@@ -67,5 +73,11 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 24,
+  },
+  warning: {
+    marginTop: 20,
+    fontSize: 18,
+    color: 'red',
+    fontWeight: 'bold',
   },
 });

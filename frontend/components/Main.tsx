@@ -5,7 +5,7 @@ import * as Google from 'expo-auth-session/providers/google';
 import { Link } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
 
-const API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8082/api/datos' : 'http://localhost:8082/api/datos';
+const API_URL = Platform.OS === 'android' ? 'http://10.100.62.71:8082/api/datos' : 'http://localhost:8082/api/datos';
 const logo  = require('../assets/Aicar-lg.png');
 
 
