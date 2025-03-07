@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, TouchableOpacity, Text, StyleSheet,Platform, Image } from 'react-native';
-const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/signin' : 'http://localhost:8082/api/signin';
+const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/signup' : 'http://localhost:8082/api/signup';
 const logo  = require('../assets/Aicar-lg.png')
 import { Link } from 'expo-router';
 

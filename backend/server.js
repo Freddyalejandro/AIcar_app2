@@ -73,10 +73,7 @@ app.post('/api/signup', (req, res) => {
       });
   });
 });
-
-
-
-  app.post('/api/signin', (req, res) => {
+app.post('/api/signin', (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
@@ -105,16 +102,21 @@ app.post('/api/signup', (req, res) => {
                 return res.status(401).json({ error: 'Invalid credentials' });
             }
 
-            // Generar el token solo si la contraseña es correcta
+            // Generar el token con el nombre incluido
             const token = jwt.sign(
-                { userId: user.id, email: user.email },
-                'secretKey', // Reemplázalo por una clave segura en producción
+                { userId: user.id, email: user.email, first_name: user.first_name },
+                'secretKey', // 🔒 Usa una clave más segura en producción
                 { expiresIn: '1h' }
             );
+
             console.log("Successful login for:", user.first_name);
             console.log(user.hashedPassword, "the hashed password does not match");
-            res.status(200).json({ success: true, message: 'login successfully!', token });
-            
+            res.status(200).json({ 
+                success: true, 
+                message: 'Login successfully!', 
+                token,
+                first_name: user.first_name // ✅ Enviar el nombre del usuario
+            });
         });
     });
 });

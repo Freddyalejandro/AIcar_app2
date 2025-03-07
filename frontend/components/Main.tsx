@@ -1,11 +1,12 @@
 
 import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, TouchableOpacity,Image, ActivityIndicator, Button,Platform} from 'react-native';
-const logo  = require('../assets/Aicar-lg.png');
 import * as Google from 'expo-auth-session/providers/google';
 import { Link } from 'expo-router';
 import * as WebBrowser from 'expo-web-browser';
+
 const API_URL = Platform.OS === 'android' ? 'http://10.0.2.2:8082/api/datos' : 'http://localhost:8082/api/datos';
+const logo  = require('../assets/Aicar-lg.png');
 
 
 

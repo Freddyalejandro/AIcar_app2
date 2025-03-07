@@ -1,36 +1,46 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Platform } from 'react-native';
-const logo  = require('../assets/Aicar-lg.png')
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Link } from 'expo-router';
+//samuel.rb@gmail.com
+const logo  = require('../assets/Aicar-lg.png')
 const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/signin' : 'http://localhost:8082/api/signin';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [first_name,setfirst_name] = useState('');
 
   const handleLogin = async () => {
     try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-  
-      if (!response.ok) {
-        const text = await response.text(); // Obtiene respuesta en texto (por si no es JSON)
-        throw new Error(`Error: ${response.status} - ${text}`);
-      }
-  
-      const data = await response.json();
-      navigation.navigate('hello');
-      console.log('Login successful:', data.token);
-    } catch (error) {
-      console.error('Error logging in:', error);
-      setError('Something went wrong. Please try again.');
-    }
-  };
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password })
+        });
 
+        const data = await response.json();
+        console.log("Respuesta completa del backend:", data); // <-- Verifica qué se recibe
+
+        if (data.success) {
+            await AsyncStorage.setItem('token', data.token);
+
+            if (data.first_name) {
+                await AsyncStorage.setItem('userName', data.first_name);
+                console.log('Nombre guardado en AsyncStorage:', data.first_name);
+                navigation.navigate('hello');
+            } else {
+                console.log("Error: 'first_name' no está presente en la respuesta.");
+            }
+        } else {
+            setError(data.error);
+        }
+    } catch (error) {
+        console.error('Error logging in:', error);
+        setError('Something went wrong. Please try again.');
+    }
+};
   return (
     <View style={styles.container}>
       <View style={styles.rowContainer}>
@@ -117,3 +127,4 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
 });
+//Sign in with Google on Expo React Native youtebe

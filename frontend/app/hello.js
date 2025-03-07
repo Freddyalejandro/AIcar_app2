@@ -1,48 +1,53 @@
-import React, {useEffect, useState} from 'react';
-import { View, Text, StyleSheet,Image, ImageBackground, Platform } from 'react-native';
-const logo  = require('../assets/Aicar-lg.png')
-import { Link } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, Image, Platform } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useRouter } from 'expo-router';
+
+const logo = require('../assets/Aicar-lg.png');
+
 const API_URL = Platform.OS === 'android' ? 'http://192.168.1.135:8082/api/datos' : 'http://localhost:8082/api/datos';
 
 export default function WelcomePage() {
   const [userName, setUserName] = useState('');
-  const [data, setData] = useState([]);
-    const fetchData = async () => {
+  const router = useRouter();
+  const [isFirstTime, setIsFirstTime] = useState(null);
+
+  useEffect(() => {
+    const checkUserStatus = async () => {
       try {
-        const response = await fetch(API_URL, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-    
-        if (!response.ok) {
-          throw new Error(`HTTP Error! Status: ${response.status}`);
+        // Obtener el nombre del usuario
+        const storedName = await AsyncStorage.getItem('userName');
+        if (storedName) {
+          setUserName(storedName);
         }
-    
-        const json = await response.json();
-        if (json.length > 0) {
-          setUserName(json[0].first_name);
+
+        // Verificar si el usuario ya completó el formulario
+        const formCompleted = await AsyncStorage.getItem('formCompleted');
+
+        if (!formCompleted) {
+          // Si el formulario no está completado, redirigir a la página del formulario
+          navigation.navigate('new_form');; // Asegúrate de que la ruta existe
         }
       } catch (error) {
-        console.error('Error fetching data:', error.message);
+        console.error('Error checking user status:', error);
       }
     };
-  
-    useEffect(() => {
-      fetchData();
-    }, []);
-    return (
-      <View style={styles.container}>
-        <Image source={logo} style={styles.image} />
-        <Text style={styles.logo}>Aicar.</Text>
-        {userName ? (
-          <Text style={styles.title}>Welcome, {userName}!</Text> // Muestra el nombre del usuario
-        ) : (
-          <Text style={styles.title}>Loading...</Text> // Muestra 'Loading' mientras se carga el nombre
-        )}
-      </View>
-    );
-  
-};
+
+    checkUserStatus();
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <Image source={logo} style={styles.image} />
+      <Text style={styles.logo}>Aicar.</Text>
+      {userName ? (
+        <Text style={styles.title}>Welcome, {userName}!</Text> // Muestra el nombre del usuario
+      ) : (
+        <Text style={styles.title}>Loading...</Text> // Muestra 'Loading' mientras se carga el nombre
+      )}
+    </View>
+  );
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -50,11 +55,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  
   image: {
-    width: 200,    // Ajusta el tamaño de la imagen
-    height: 250,   // Ajusta el tamaño de la imagen
-    resizeMode: 'contain', // Ajusta cómo se escala la imagen
+    width: 200,
+    height: 250,
+    resizeMode: 'contain',
   },
   logo: {
     fontSize: 48,
@@ -65,4 +69,3 @@ const styles = StyleSheet.create({
     fontSize: 24,
   },
 });
-
