@@ -35,7 +35,7 @@
         "origin": false
       },
       "expo-router": {
-         "appRoot": "../../app"
+         "appRoot": "app"
       },
       "eas": {
         "projectId": "4ee41aa8-1570-4662-8c67-5882bf6dd3b0"

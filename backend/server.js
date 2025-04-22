@@ -3,7 +3,8 @@ var session = require('express-session');
 var mysql = require('mysql2');
 var cors = require('cors');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken'); // Para generar tokens JWT
+const jwt = require('jsonwebtoken'); 
+
 
 // Crear la aplicación express
 const app = express();
@@ -109,7 +110,7 @@ app.post('/api/signin', (req, res) => {
                 { expiresIn: '1h' }
             );
 
-            console.log("Successful login for:", user.first_name);
+            console.log("Successful login for:", user.first_name, ",",user.id);
             console.log(user.hashedPassword, "the hashed password does not match");
             res.status(200).json({ 
                 success: true, 
@@ -120,7 +121,58 @@ app.post('/api/signin', (req, res) => {
         });
     });
 });
+const authenticateToken = require('./authenticateToken');
 
+app.post('/api/user_info',authenticateToken, (req, res) => {
+    const data = req.body;
+
+    const sql = `INSERT INTO user_data (
+        gender, height, weight, age,
+        diabetes, familyHistoryArrhythmias, highBloodPressure,
+        highCholesterol, obesity, autoimmuneDiseases, kidneyDisease,
+        metabolicSyndrome, myocardialInfarction, sleepHours, activity,
+        smoke, drugs, caffeine, stressLevel,
+        emergencyContact1Name, emergencyContact1Number,
+        emergencyContact2Name, emergencyContact2Number,
+        user_id
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+
+    const values = [
+        data.gender || null,// Manejo de campos opcionales o no enviados
+        data.height || null,
+        data.weight || null,
+        data.age || null,
+        data.diabetes || false,
+        data.familyHistoryArrhythmias || false, // comenzar la bariable en negativo
+        data.highBloodPressure || false,
+        data.highCholesterol || false,
+        data.obesity || false,
+        data.autoimmuneDiseases || false,
+        data.kidneyDisease || false,
+        data.metabolicSyndrome || false,
+        data.myocardialInfarction || false,
+        data.sleepHours || null,
+        data.activity || null,
+        data.smoke || false,
+        data.drugs || false,
+        data.caffeine || false,
+        data.stressLevel || null,
+        data.emergencyContact1?.name || null,
+        data.emergencyContact1?.number1 || null,
+        data.emergencyContact2?.name || null,
+        data.emergencyContact2?.number1 || null,
+        req.user.userId // <<<<<< CORRECTO: userId viene del JWT
+    ];
+
+    pool.query(sql, values, (err, result) => {
+        if (err) {
+            console.error("Insert error:", err);
+            return res.status(500).json({ error: "Error inserting data into database" });
+        }
+
+        res.status(200).json({ message: "User data saved successfully!" });
+    });
+});
 
   
 // Iniciar el servidor
