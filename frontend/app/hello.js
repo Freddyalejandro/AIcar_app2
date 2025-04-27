@@ -25,6 +25,19 @@ export default function WelcomePage() {
         if (storedName) {
           setUserName(storedName);
         }
+        
+        const token = await AsyncStorage.getItem('token');
+        const response = await fetch(API_URL, {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+
+          const data = await response.json();
+          console.log('Datos recibidos del backend:', data);
+          // Aquí podrías actualizar estados según lo que necesites
+      
   
         const formCompletedValue = await AsyncStorage.getItem('formCompleted');
         console.log('Raw formCompleted value:', formCompletedValue);

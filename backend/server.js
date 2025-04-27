@@ -116,7 +116,8 @@ app.post('/api/signin', (req, res) => {
                 success: true, 
                 message: 'Login successfully!', 
                 token,
-                first_name: user.first_name // ✅ Enviar el nombre del usuario
+                first_name: user.first_name, // ✅ Enviar el nombre del usuario
+                ID:user.id
             });
         });
     });
@@ -179,3 +180,4 @@ app.post('/api/user_info',authenticateToken, (req, res) => {
 app.listen(port, () => {
     console.log(`Node app listening on port ${port}!`);
 });
+module.exports = app; 

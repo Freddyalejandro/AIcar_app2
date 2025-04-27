@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { View, Text, TextInput, Button, ScrollView, StyleSheet } from "react-native";
 import { Platform } from 'react-native';
-const API_URL = Platform.OS === 'android' ? 'http://http://10.100.62.71:8082//api/user_info' : 'http://localhost:8082//api/user_info';
+const API_URL = Platform.OS === 'android' ? 'http://10.100.62.71:8082/api/user_info' : 'http://localhost:8082/api/user_info';
 import { Picker } from '@react-native-picker/picker';
-import * as jwt_decode from "jwt-decode";
+import jwt_decode from "jwt-decode";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 const logo  = require('../assets/Aicar-lg.png');
 
@@ -32,8 +34,27 @@ const FormularioValoracion = () => {
     emergencyContact1: { name: "", number1: ""},
     emergencyContact2: { name: "", number1: ""},
   });
+  useEffect(() => {
+    const fetchUserId = async () => {
+      const token = await AsyncStorage.getItem('token');
+      if (token) {
+        try {
+          const decodedToken = jwt_decode(token);
+          setFormData(prevData => ({
+            ...prevData,
+            user_id: decodedToken.userId
+          }));
+        } catch (error) {
+          console.error("Error decoding token:", error);
+        }
+      }
+    };
+    fetchUserId();
+  }, []);
+
+
   const handleUserDataSubmit = async () => {
-    const token = localStorage.getItem('token');  // Obtener el token desde localStorage
+    const token = AsyncStorage.getItem('token');  // Obtener el token desde localStorage
   
     if (!formData) {
       alert("Missing form data.");
@@ -47,7 +68,7 @@ const FormularioValoracion = () => {
   
     try {
       // Decodificar el token JWT
-      const decodedToken = jwt_decode.default(token);  // Aquí es donde se usa jwt_decode
+      const decodedToken = jwt_decode(token);  // Aquí es donde se usa jwt_decode
   
       const userId = decodedToken.userId;
   
