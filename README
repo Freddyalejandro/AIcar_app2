@@ -1,6 +1,4 @@
-para comenzar este programa despues de clonarlo 
-1 abrir la carpeta backend y npm install express 
-2 abrir la carpeta frontend y npm isntall expo
+2. Open the frontend folder and npm istall expo
 
 npx expo prebuild
 eas --version
@@ -9,8 +7,7 @@ npx expo install expo-device react-native-base64
 react-native-ble-plx
 npx create-expo-app -t expo-temple-blank-typescript expo-ble-sample
 
-para lansar el servidor de expo de nuevo
-npx expo start --dev-client
+To launch the expo server again, npx expo start --dev-client
 
-ejecutar en el dispositivo de nuevo 
+Run on the device again
 npx expo run:android
