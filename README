@@ -1,13 +1,16 @@
-2. Open the frontend folder and npm istall expo
+Open the repository
+1. Open the frontend folder and npm install expo
+2. Then use the backend folder = npm install to install the dependencies
 
-npx expo prebuild
-eas --version
-npx expo install @shopify/react-native-skia
-npx expo install expo-device react-native-base64
-react-native-ble-plx
-npx create-expo-app -t expo-temple-blank-typescript expo-ble-sample
+To run the backend = node server.js
+To run the frontend = npm star
+# npx expo prebuild
+# eas --version
+# npx expo install @shopify/react-native-skia
+# npx expo install expo-device react-native-base64
+# react-native-ble-plx
+# npx create-expo-app -t expo-temple-blank-typescript expo-ble-sample
 
-To launch the expo server again, npx expo start --dev-client
+# To launch the expo server again, npx expo start --dev-client
 
-Run on the device again
-npx expo run:android
+# Run on the device again
