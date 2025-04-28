@@ -2,8 +2,13 @@ Open the repository
 1. Open the frontend folder and npm install expo
 2. Then use the backend folder = npm install to install the dependencies
 
-To run the backend = node server.js
-To run the frontend = npm star
+To run the backend = node server.js in the terminal in vs
+To run the frontend = npm star in the terminal
+To use the web format, press the W key.
+To use the app format, you must download the Expo Go application and then scan the QR code displayed in the terminal with the camera.
+Both applications must be running at the same time for integration.
+
+
 # npx expo prebuild
 # eas --version
 # npx expo install @shopify/react-native-skia
